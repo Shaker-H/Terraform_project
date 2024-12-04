@@ -48,12 +48,12 @@ resource "aws_instance" "app_server" {
   }
 }
 resource "aws_elastic_beanstalk_application" "example_app" {
-  name        = "<your-team-name>-task-listing-app"
+  name        = "MRS-task-listing-app"
   description = "Task listing app"
 }
 
 resource "aws_elastic_beanstalk_environment" "example_app_environment" {
-  name                = "<your-team-name>-task-listing-app-environment"
+  name                = "MRS-task-listing-app-environment"
   application         = aws_elastic_beanstalk_application.example_app.name
 
   # This page lists the supported platforms
@@ -70,6 +70,6 @@ resource "aws_elastic_beanstalk_environment" "example_app_environment" {
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name = "EC2KeyName"
-    value = "your-ec2-key-pair-name"
+    value = "MRS"
   }
 }
