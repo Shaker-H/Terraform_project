@@ -94,16 +94,3 @@ resource "aws_elastic_beanstalk_environment" "example_app_environment" {
     value = "MRS"
   }
 }
-
-resource "aws_db_instance" "rds_app" {
-  allocated_storage    = 10
-  engine               = "postgres"
-  engine_version       = "17.2"
-  instance_class       = "db.t3.micro"
-  identifier           = "mrs-app-prod"
-  db_name              = "mrs_db"
-  username             = "root"
-  password             = "password"
-  skip_final_snapshot  = true
-  publicly_accessible  = true
-}
