@@ -94,3 +94,8 @@ resource "aws_elastic_beanstalk_environment" "example_app_environment" {
     value = "MRS"
   }
 }
+
+resource "aws_iam_role_policy_attachment" "beanstalk_ec2_ecr_policy" {
+  role       = "aws-elasticbeanstalk-ec2-role"  
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
