@@ -94,3 +94,21 @@ resource "aws_elastic_beanstalk_environment" "example_app_environment" {
     value = "MRS"
   }
 }
+
+resource "aws_iam_role_policy_attachment" "beanstalk_ec2_ecr_policy" {
+  role       = "aws-elasticbeanstalk-ec2-role"  
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
+
+resource "aws_db_instance" "rds_app" {
+  allocated_storage    = 10
+  engine               = "postgres"
+  engine_version       = "17.2"
+  instance_class       = "db.t3.micro"
+  identifier           = "mrs-app-prod"
+  db_name              = "mrs_db"
+  username             = "root"
+  password             = "password"
+  skip_final_snapshot  = true
+  publicly_accessible  = true
+}
