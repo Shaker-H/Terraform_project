@@ -1,6 +1,6 @@
 terraform {
 
-    backend "s3" {
+  backend "s3" {
     bucket = "group-mrs-bucket"
     key    = "path/tf/state"
     region = "eu-west-2"
@@ -20,7 +20,16 @@ provider "aws" {
   region = "eu-west-2"
 }
 
-resource "" "" {
+resource "aws_ecr_repository" "smrrepository" {
+  name = "smrrepository"
 
+  image_tag_mutability = "MUTABLE"
 
+  image_scanning_configuration {
+    scan_on_push = false
+  }
+
+  encryption_configuration {
+    encryption_type = "AES256"
+  }
 }
