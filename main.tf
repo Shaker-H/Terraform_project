@@ -44,7 +44,7 @@ resource "aws_instance" "app_server" {
   instance_type = "t2.micro"
 
   tags = {
-    Name = "AppServer"
+    Name = "MRS_AppServer"
   }
 }
 resource "aws_elastic_beanstalk_application" "example_app" {
