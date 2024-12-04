@@ -2,7 +2,7 @@ terraform {
 
   backend "s3" {
     bucket = "group-mrs-bucket"
-    key    = "//group-mrs-bucket/Terraform_Project/"
+    key    = "group-mrs-bucket/Terraform_Project"
     region = "eu-west-2"
   }
 
@@ -32,4 +32,9 @@ resource "aws_ecr_repository" "smrrepository" {
   encryption_configuration {
     encryption_type = "AES256"
   }
+}
+
+resource "aws_instance" "app_server" {
+  ami           = "ami-0d26eb3972b7f8c96"
+  instance_type = "t2.micro"
 }
