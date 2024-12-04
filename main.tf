@@ -51,6 +51,27 @@ resource "aws_elastic_beanstalk_application" "example_app" {
   name        = "MRS-task-listing-app"
   description = "Task listing app"
 }
+resource "aws_iam_role" "example_app_ec2_role" {
+  name = "example-app-ec2-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action    = "sts:AssumeRole"
+        Effect    = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      },
+    ]
+  })
+}
+
+resource "aws_iam_instance_profile" "example_app_ec2_instance_profile" {
+  name = "example-app-ec2-instance-profile"
+  role = aws_iam_role.example_app_ec2_role.name
+}
 
 resource "aws_elastic_beanstalk_environment" "example_app_environment" {
   name                = "MRS-task-listing-app-environment"
