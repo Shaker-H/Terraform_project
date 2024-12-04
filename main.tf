@@ -2,7 +2,7 @@ terraform {
 
   backend "s3" {
     bucket = "group-mrs-bucket"
-    key    = "path/tf/state"
+    key    = "//group-mrs-bucket/Terraform_Project/"
     region = "eu-west-2"
   }
 
