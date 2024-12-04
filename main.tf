@@ -33,7 +33,7 @@ resource "aws_ecr_repository" "smrrepository" {
     encryption_type = "AES256"
   }
   lifecycle {
-    ignore_changes = [name]  // I added this line so that if ecr repo already exists it will not make another one with same name
+    ignore_changes = [name] // I added this line so that if ecr repo already exists it will not make another one with same name
   }
 }
 
