@@ -47,7 +47,6 @@ resource "aws_instance" "app_server" {
     Name = "AppServer"
   }
 }
-
 resource "aws_elastic_beanstalk_application" "example_app" {
   name        = "<your-team-name>-task-listing-app"
   description = "Task listing app"
