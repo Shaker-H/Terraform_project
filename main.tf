@@ -32,9 +32,18 @@ resource "aws_ecr_repository" "smrrepository" {
   encryption_configuration {
     encryption_type = "AES256"
   }
+  lifecycle {
+    ignore_changes = [name]  // I added this line so that if ecr repo already exists it will not make another one with same name
+  }
 }
+
+
 
 resource "aws_instance" "app_server" {
   ami           = "ami-0d26eb3972b7f8c96"
   instance_type = "t2.micro"
+
+  tags = {
+    Name = "AppServer"
+  }
 }
