@@ -36,6 +36,9 @@ resource "aws_ecr_repository" "smrrepository" {
     ignore_changes = [name] // I added this line so that if ecr repo already exists it will not make another one with same name
   }
 }
+
+
+
 resource "aws_instance" "app_server" {
   ami           = "ami-0d26eb3972b7f8c96"
   instance_type = "t2.micro"
@@ -43,10 +46,12 @@ resource "aws_instance" "app_server" {
     Name = "MRS_AppServer"
   }
 }
+
 resource "aws_elastic_beanstalk_application" "example_app" {
   name        = "MRS-task-listing-app"
   description = "Task listing app"
 }
+
 resource "aws_iam_role" "example_app_ec2_role" {
   name = "example-app-ec2-role"
   assume_role_policy = jsonencode({
@@ -84,9 +89,9 @@ resource "aws_elastic_beanstalk_environment" "example_app_environment" {
     value = "MRS"
   }
 }
-# Corrected the IAM role attachment to reference the IAM role created
+
 resource "aws_iam_role_policy_attachment" "beanstalk_ec2_ecr_policy" {
-  role       = aws_iam_role.example_app_ec2_role.name
+  role       = "aws-elasticbeanstalk-ec2-role"
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
 resource "aws_db_instance" "rds_app" {
