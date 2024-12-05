@@ -76,21 +76,24 @@ resource "aws_iam_instance_profile" "example_app_ec2_instance_profile" {
 resource "aws_elastic_beanstalk_environment" "example_app_environment" {
   name                = "MRS-task-listing-app-environment"
   application         = aws_elastic_beanstalk_application.example_app.name
+
+  # This page lists the supported platforms
+  # we can use for this argument:
+  # https://docs.aws.amazon.com/elasticbeanstalk/latest/platforms/platforms-supported.html#platforms-supported.docker
   solution_stack_name = "64bit Amazon Linux 2023 v4.0.1 running Docker"
 
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "IamInstanceProfile"
-    value     = aws_iam_instance_profile.mrs_task_listing_app_ec2_instance_profile.name
+    value     = aws_iam_instance_profile.example_app_ec2_instance_profile.name
   }
 
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
-    name      = "EC2KeyName"
-    value     = "MRS"  
+    name = "EC2KeyName"
+    value = "MRS"
   }
 }
-
 
 resource "aws_iam_role_policy_attachment" "beanstalk_ec2_ecr_policy" {
   role       = "aws-elasticbeanstalk-ec2-role"  
@@ -108,35 +111,4 @@ resource "aws_db_instance" "rds_app" {
   password             = "password"
   skip_final_snapshot  = true
   publicly_accessible  = true
-}
-
-resource "aws_iam_role" "mrs_task_listing_app_ec2_role" {
-  name = "MRS-task-listing-app-ec2-instance-role"
-
-  
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-        Effect = "Allow"
-        Sid = ""
-      }
-    ]
-  })
-}
-
-
-resource "aws_iam_instance_profile" "mrs_task_listing_app_ec2_instance_profile" {
-  name = "MRS-task-listing-app-ec2-instance-profile"
-  role = aws_iam_role.mrs_task_listing_app_ec2_role.name
-}
-
-
-resource "aws_iam_role_policy_attachment" "beanstalk_ec2_ecr_policy" {
-  role       = aws_iam_role.mrs_task_listing_app_ec2_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
