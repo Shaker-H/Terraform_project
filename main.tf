@@ -58,8 +58,8 @@ resource "aws_iam_role" "example_app_ec2_role" {
     Version = "2012-10-17"
     Statement = [
       {
-        Action    = "sts:AssumeRole"
-        Effect    = "Allow"
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
         Principal = {
           Service = "ec2.amazonaws.com"
         }
@@ -74,8 +74,8 @@ resource "aws_iam_instance_profile" "example_app_ec2_instance_profile" {
 }
 
 resource "aws_elastic_beanstalk_environment" "example_app_environment" {
-  name                = "MRS-task-listing-app-environment"
-  application         = aws_elastic_beanstalk_application.example_app.name
+  name        = "MRS-task-listing-app-environment"
+  application = aws_elastic_beanstalk_application.example_app.name
 
   # This page lists the supported platforms
   # we can use for this argument:
@@ -90,8 +90,8 @@ resource "aws_elastic_beanstalk_environment" "example_app_environment" {
 
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
-    name = "EC2KeyName"
-    value = "MRS"
+    name      = "EC2KeyName"
+    value     = "MRS"
   }
 }
 
@@ -113,4 +113,3 @@ resource "aws_db_instance" "rds_app" {
   skip_final_snapshot  = true
   publicly_accessible  = true
 }
-git
