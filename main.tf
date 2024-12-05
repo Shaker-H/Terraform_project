@@ -37,8 +37,6 @@ resource "aws_ecr_repository" "smrrepository" {
   }
 }
 
-
-
 resource "aws_instance" "app_server" {
   ami           = "ami-0d26eb3972b7f8c96"
   instance_type = "t2.micro"
@@ -47,10 +45,12 @@ resource "aws_instance" "app_server" {
     Name = "MRS_AppServer"
   }
 }
+
 resource "aws_elastic_beanstalk_application" "example_app" {
   name        = "MRS-task-listing-app"
   description = "Task listing app"
 }
+
 resource "aws_iam_role" "example_app_ec2_role" {
   name = "example-app-ec2-role"
 
@@ -95,8 +95,9 @@ resource "aws_elastic_beanstalk_environment" "example_app_environment" {
   }
 }
 
+# Corrected the IAM role attachment to reference the IAM role created
 resource "aws_iam_role_policy_attachment" "beanstalk_ec2_ecr_policy" {
-  role       = "aws-elasticbeanstalk-ec2-role"  
+  role       = aws_iam_role.example_app_ec2_role.name  
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
 
@@ -112,3 +113,4 @@ resource "aws_db_instance" "rds_app" {
   skip_final_snapshot  = true
   publicly_accessible  = true
 }
+git
