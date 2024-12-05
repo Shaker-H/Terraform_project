@@ -1,5 +1,11 @@
 terraform {
+  backend "remote" {
+    organization = "makersproject"
 
+    workspaces {
+      name = "learn-terraform-aws"
+    }
+  }
   backend "s3" {
     bucket = "group-mrs-bucket"
     key    = "group-mrs-bucket/Terraform_Project"
