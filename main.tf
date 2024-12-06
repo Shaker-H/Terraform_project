@@ -76,9 +76,6 @@ resource "aws_elastic_beanstalk_environment" "example_app_environment" {
   name        = "MRS-task-listing-app-environment"
   application = aws_elastic_beanstalk_application.example_app.name
 
-  # This page lists the supported platforms
-  # we can use for this argument:
-  # https://docs.aws.amazon.com/elasticbeanstalk/latest/platforms/platforms-supported.html#platforms-supported.docker
   solution_stack_name = "64bit Amazon Linux 2023 v4.0.1 running Docker"
 
   setting {
@@ -91,6 +88,31 @@ resource "aws_elastic_beanstalk_environment" "example_app_environment" {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "EC2KeyName"
     value     = "MRS"
+  }
+
+  # Add environment variables for RDS connection
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "DB_HOST"
+    value     = aws_db_instance.rds_app.address
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "DB_NAME"
+    value     = aws_db_instance.rds_app.db_name
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "DB_USER"
+    value     = aws_db_instance.rds_app.username
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "DB_PASSWORD"
+    value     = aws_db_instance.rds_app.password
   }
 }
 
@@ -138,3 +160,4 @@ resource "aws_iam_role_policy_attachment" "beanstalk_worker_tier_policy" {
   role       = aws_iam_role.example_app_ec2_role.name
   policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkWorkerTier"
 }
+
