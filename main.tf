@@ -1,11 +1,4 @@
 terraform {
-  backend "remote" {
-    organization = "makersproject"
-
-    workspaces {
-      name = "learn-terraform-aws"
-    }
-  }
   backend "s3" {
     bucket = "group-mrs-bucket"
     key    = "group-mrs-bucket/Terraform_Project"
@@ -51,6 +44,7 @@ resource "aws_instance" "app_server" {
     Name = "MRS_AppServer"
   }
 }
+
 
 resource "aws_elastic_beanstalk_application" "example_app" {
   name        = "MRS-task-listing-app"
