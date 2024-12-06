@@ -45,7 +45,6 @@ resource "aws_instance" "app_server" {
   }
 }
 
-
 resource "aws_elastic_beanstalk_application" "example_app" {
   name        = "MRS-task-listing-app"
   description = "Task listing app"
@@ -95,7 +94,6 @@ resource "aws_elastic_beanstalk_environment" "example_app_environment" {
   }
 }
 
-# Corrected the IAM role attachment to reference the IAM role created
 resource "aws_iam_role_policy_attachment" "beanstalk_ec2_ecr_policy" {
   role       = aws_iam_role.example_app_ec2_role.name  
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
@@ -113,6 +111,7 @@ resource "aws_db_instance" "rds_app" {
   skip_final_snapshot  = true
   publicly_accessible  = true
 }
+
 resource "aws_s3_bucket" "example" {
   bucket = "mrsappbucket"
 
@@ -120,4 +119,22 @@ resource "aws_s3_bucket" "example" {
     Name        = "My bucket"
     Environment = "Dev"
   }
+}
+
+# Attach the AWSElasticBeanstalkWebTier policy
+resource "aws_iam_role_policy_attachment" "beanstalk_web_tier_policy" {
+  role       = aws_iam_role.example_app_ec2_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier"
+}
+
+# Attach the AWSElasticBeanstalkMulticontainerDocker policy
+resource "aws_iam_role_policy_attachment" "beanstalk_multicontainer_docker_policy" {
+  role       = aws_iam_role.example_app_ec2_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkMulticontainerDocker"
+}
+
+# Attach the AWSElasticBeanstalkWorkerTier policy
+resource "aws_iam_role_policy_attachment" "beanstalk_worker_tier_policy" {
+  role       = aws_iam_role.example_app_ec2_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkWorkerTier"
 }
