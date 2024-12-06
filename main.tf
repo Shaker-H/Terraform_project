@@ -90,7 +90,6 @@ resource "aws_elastic_beanstalk_environment" "example_app_environment" {
     value     = "MRS"
   }
 
-  # Add environment variables for RDS connection
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "DB_HOST"
@@ -143,19 +142,16 @@ resource "aws_s3_bucket" "example" {
   }
 }
 
-# Attach the AWSElasticBeanstalkWebTier policy
 resource "aws_iam_role_policy_attachment" "beanstalk_web_tier_policy" {
   role       = aws_iam_role.example_app_ec2_role.name
   policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier"
 }
 
-# Attach the AWSElasticBeanstalkMulticontainerDocker policy
 resource "aws_iam_role_policy_attachment" "beanstalk_multicontainer_docker_policy" {
   role       = aws_iam_role.example_app_ec2_role.name
   policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkMulticontainerDocker"
 }
 
-# Attach the AWSElasticBeanstalkWorkerTier policy
 resource "aws_iam_role_policy_attachment" "beanstalk_worker_tier_policy" {
   role       = aws_iam_role.example_app_ec2_role.name
   policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkWorkerTier"
