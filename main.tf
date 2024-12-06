@@ -113,3 +113,11 @@ resource "aws_db_instance" "rds_app" {
   skip_final_snapshot  = true
   publicly_accessible  = true
 }
+resource "aws_s3_bucket" "example" {
+  bucket = "mrsappbucket"
+
+  tags = {
+    Name        = "My bucket"
+    Environment = "Dev"
+  }
+}
